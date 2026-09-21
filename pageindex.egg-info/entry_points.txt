@@ -1,0 +1,2 @@
+[console_scripts]
+pageindex-mcp = pageindex.mcp.__main__:main

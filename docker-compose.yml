@@ -1,0 +1,29 @@
+services:
+  pageindex-mcp:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: pageindex-mcp:local
+    container_name: pageindex-mcp
+    ports:
+      - "${PAGEINDEX_MCP_HTTP_PORT:-8765}:8765"
+    env_file:
+      - .env
+    environment:
+      # Override / supplement .env for container paths
+      PAGEINDEX_WORKSPACE_ROOT: /data/workspace
+      PAGEINDEX_CONFIG_PATH: /config/config.yaml
+      PAGEINDEX_MCP_HTTP_HOST: "0.0.0.0"
+      PAGEINDEX_MCP_HTTP_PORT: "8765"
+      PAGEINDEX_MCP_HTTP_PATH: /mcp/page-index/v1
+      # OpenAI-compatible gateway (also settable in .env)
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      OPENAI_BASE_URL: ${OPENAI_BASE_URL:-}
+    volumes:
+      # Persist indexed catalogs
+      - ${PAGEINDEX_HOST_WORKSPACE:-./workspace}:/data/workspace
+      # Mount editable model/summary settings (not baked into the image)
+      - ${PAGEINDEX_HOST_CONFIG:-./pageindex/config.yaml}:/config/config.yaml:ro
+      # Optional host folder for insert_page_index(file_path=...)
+      - ${PAGEINDEX_HOST_UPLOADS:-./uploads}:/data/uploads
+    restart: unless-stopped

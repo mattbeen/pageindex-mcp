@@ -1,0 +1,9 @@
+litellm==1.84.0
+# openai-agents  # optional: required for reference/examples/agentic_vectorless_rag_demo.py
+# docling  # optional: required for --docling (or: pip install -e ".[docling]")
+pymupdf==1.26.4
+PyPDF2==3.0.1
+python-dotenv==1.2.2
+pyyaml==6.0.2
+mcp>=1.27,<2
+httpx>=0.27
